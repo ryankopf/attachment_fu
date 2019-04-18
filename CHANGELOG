@@ -1,3 +1,7 @@
+* Apr 18, 2019 *
+* Make compatible with Rails 5.2
+* Bump version to 5.2.0 *
+
 * Oct 19, 2017 *
 * Pull in changes from michaelsauter to replace Fixnum with Integer as Fixnum was depricated in Ruby 2.4
 * Bump version to 3.3.2 *
