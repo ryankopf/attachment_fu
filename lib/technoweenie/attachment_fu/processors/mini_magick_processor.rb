@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-require 'mini_magick'
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
     module Processors

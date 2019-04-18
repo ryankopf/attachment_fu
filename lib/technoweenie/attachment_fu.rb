@@ -166,7 +166,7 @@ module Technoweenie # :nodoc:
 
       def load_related_exception?(e) #:nodoc: implementation specific
         case
-        when e.kind_of?(LoadError), e.kind_of?(MissingSourceFile), $!.class.name == "CompilationError"
+        when e.kind_of?(LoadError), $!.class.name == "CompilationError"
           # We can't rescue CompilationError directly, as it is part of the RubyInline library.
           # We must instead rescue RuntimeError, and check the class' name.
           true
@@ -453,6 +453,18 @@ module Technoweenie # :nodoc:
 
             # Finally, replace all non alphanumeric, underscore or periods with underscore
             name.gsub! /[^A-Za-z0-9\.\-]/, '_'
+            # Remove trailing underscore
+            name.gsub!(/\_\./, '.')
+            # Remove multiple underscores
+            name.gsub!(/\_+/, '_')
+
+            # Downcase result including extension
+            name.downcase!
+            # Shrink the name to a max of 70 characters
+            parts = name.split(".")
+            parts.first.include?("_thumb") ? parts.first.slice!(82..-1) : parts.first.slice!(70..-1)
+            name = parts.join(".")
+            return name
           end
         end
 

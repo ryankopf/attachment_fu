@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 
 group :test, :development do
-  gem 'rails', '~> 3.2'
+  gem 'rails', '~> 5.2'
   gem 'sqlite3'
-  gem 'pothoven-attachment_fu', :path => '.'
+  gem 'ryankopf-attachment_fu', :path => '.'
   gem 'rmagick'
   gem 'core_image'
   gem 'mini_magick'

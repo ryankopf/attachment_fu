@@ -172,37 +172,33 @@ module Technoweenie # :nodoc:
         class ConfigFileNotFoundError < StandardError; end
 
         def self.included(base) #:nodoc:
-          mattr_reader :bucket_name, :s3_config, :s3_conn, :bucket
-
+          mattr_reader :bucket_name, :s3_config
           begin
-            require 'aws-sdk-v1'
+            require 'aws-sdk'
+            include Aws::S3
           rescue LoadError
-            raise RequiredLibraryNotFoundError.new('aws-sdk-v1 could not be loaded. Make sure the gem is installed.')
+            raise RequiredLibraryNotFoundError.new('AWS::S3 could not be loaded')
           end
-
           begin
-            @@s3_config_path = base.attachment_options[:s3_config_path] || File.join(Rails.root, 'config', 'amazon_s3.yml')
-            @@s3_config = @@s3_config = YAML.load(ERB.new(File.read(@@s3_config_path)).result)[Rails.env].symbolize_keys
-          #rescue
-          #  raise ConfigFileNotFoundError.new('File %s not found' % @@s3_config_path)
+            s3_config_path = base.attachment_options[:s3_config_path] || File.join(Rails.root, 'config', 'amazon_s3.yml')
+            s3_config = s3_config = YAML.load(ERB.new(File.read(s3_config_path)).result)[Rails.env].symbolize_keys
           end
-
           bucket_key = base.attachment_options[:bucket_key]
-
           if bucket_key and s3_config[bucket_key.to_sym]
             eval_string = "def bucket_name()\n  \"#{s3_config[bucket_key.to_sym]}\"\nend"
           else
             eval_string = "def bucket_name()\n  \"#{s3_config[:bucket_name]}\"\nend"
           end
           base.class_eval(eval_string, __FILE__, __LINE__)
-
-          @@s3_conn = AWS::S3.new(s3_config.slice(:access_key_id, :secret_access_key))
-          @@bucket = s3_conn.buckets[s3_config[:bucket_name]]
-
-          #Base.establish_connection!(s3_config.slice(:access_key_id, :secret_access_key, :server, :port, :use_ssl, :persistent, :proxy))
-
+          bucket_name = s3_config[:bucket_name];s3_config.delete(:bucket_name)
+          class_variable_set(:@@bucket_name,bucket_name)
+          class_variable_set(:@@s3_config,s3_config)
+          s3_config[:region] = "us-east-1"
+          s3_resource = Aws::S3::Resource.new(region:'us-east-1',access_key_id: s3_config[:access_key_id],secret_access_key: s3_config[:secret_access_key])
+          class_variable_set(:@@s3_resource,s3_resource)
           base.before_update :rename_file
         end
+
 
         def self.protocol
           @protocol ||= s3_config[:use_ssl] ? 'https://' : 'http://'
@@ -253,13 +249,38 @@ module Technoweenie # :nodoc:
         # Example: <tt>:table_name/:id</tt>
         def base_path(thumbnail = nil)
           file_system_path = (thumbnail ? thumbnail_class : self).attachment_options[:path_prefix]
-          File.join(file_system_path, attachment_path_id)
+          File.join(file_system_path)#, attachment_path_id)
         end
+
+        mattr_reader :s3_resource
 
         # The full path to the file relative to the bucket name
         # Example: <tt>:table_name/:id/:filename</tt>
         def full_filename(thumbnail = nil)
-          File.join(base_path(thumbnail), thumbnail_name_for(thumbnail))
+          File.join(base_path, *partitioned_path(thumbnail_name_for(thumbnail)))
+        end
+        def partitioned_path(*args)
+          if respond_to?(:attachment_options) && attachment_options[:partition] == false
+            args
+          elsif attachment_options[:uuid_primary_key]
+            # Primary key is a 128-bit UUID in hex format. Split it into 2 components.
+            path_id = attachment_path_id.to_s
+            component1 = path_id[0..15] || "-"
+            component2 = path_id[16..-1] || "-"
+            [component1, component2] + args
+          else
+            path_id = attachment_path_id
+            path_id = path_id.to_i rescue path_id
+            #RAILS_DEFAULT_LOGGER.info path_id.to_s
+            if path_id.is_a?(Integer)
+              # Primary key is an integer. Split it after padding it with 0.
+              ("%08d" % path_id).scan(/..../) + args
+            else
+              # Primary key is a String. Hash it, then split it into 4 components.
+              hash = Digest::SHA512.hexdigest(path_id.to_s)
+              [hash[0..31], hash[32..63], hash[64..95], hash[96..127]] + args
+            end
+          end
         end
 
         # All public objects are accessible via a GET request to the S3 servers. You can generate a
@@ -273,7 +294,11 @@ module Technoweenie # :nodoc:
         #
         # The optional thumbnail argument will output the thumbnail's filename (if any).
         def s3_url(thumbnail = nil)
-          File.join(s3_protocol + s3_hostname + s3_port_string, bucket_name, full_filename(thumbnail))
+          if bucket_name.include?(".")
+            File.join(s3_protocol + bucket_name + s3_port_string, full_filename(thumbnail))
+          else
+            File.join(s3_protocol + s3_hostname + s3_port_string, bucket_name, full_filename(thumbnail))
+          end
         end
 
         # All public objects are accessible via a GET request to CloudFront. You can generate a
@@ -362,8 +387,8 @@ module Technoweenie # :nodoc:
         protected
           # Called in the after_destroy callback
           def destroy_file
-            obj = bucket.objects[full_filename]
-            obj.delete
+            true #obj = bucket.objects[full_filename]
+            #obj.delete
           end
 
           def rename_file
@@ -391,22 +416,27 @@ module Technoweenie # :nodoc:
           def save_to_storage
             if save_attachment?
               if attachment_options[:encrypted_storage]
-                obj = bucket.objects[full_filename]
-                obj.write(:file => (temp_path ? File.open(temp_path) : temp_data),
-                          :cache_control => attachment_options[:cache_control],
-                          :acl => attachment_options[:s3_access],
-                          :server_side_encryption => :aes256,
-                          :content_disposition => "attachment; filename=\"#{filename}\""
+                S3Object.store(
+                    full_filename,
+                    (temp_path ? File.open(temp_path) : temp_data),
+                    bucket_name,
+                    :content_type => content_type,
+                    :cache_control => attachment_options[:cache_control],
+                    :access => attachment_options[:s3_access],
+                    'x-amz-server-side-encryption' => 'AES256',
+                    'Content-Disposition' => "attachment; filename=\"#{filename}\""
                 )
               else
-                obj = bucket.objects[full_filename]
-                obj.write(:file => (temp_path ? File.open(temp_path) : temp_data),
-                          :cache_control => attachment_options[:cache_control],
-                          :acl => attachment_options[:s3_access]
-                )
+                obj = s3_resource.bucket(bucket_name).object(full_filename[1..-1])
+                puts "UPLOADING: "
+                Rails.logger.warn full_filename[1..-1]
+                Rails.logger.warn temp_path
+                Rails.logger.warn obj.upload_file(temp_path,{
+                    acl: 'public-read',
+                    cache_control: 'max-age=2592000'
+                })
               end
             end
-
             @old_filename = nil
             true
           end

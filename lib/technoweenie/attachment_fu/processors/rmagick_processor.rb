@@ -1,12 +1,3 @@
-begin
-  require "rmagick"
-rescue LoadError
-  require "RMagick"
-rescue LoadError => e
-  e.message << " (You may need to install the rmagick gem)"
-  raise e
-end
-
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
     module Processors
