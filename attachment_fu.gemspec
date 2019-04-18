@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.version			= "5.2.0"
   s.date			  = %q{2019-04-18}
 
-  s.files			  = Dir.glob("{lib,vendor}/**/*") + %w( CHANGELOG LICENSE README.rdoc amazon_s3.yml.tpl rackspace_cloudfiles.yml.tpl )
+  s.files			  = Dir.glob("{lib}/**/*") + %w( CHANGELOG LICENSE README.rdoc amazon_s3.yml.tpl rackspace_cloudfiles.yml.tpl )
   s.extra_rdoc_files  = ["README.rdoc"]
   s.rdoc_options	  = ["--inline-source", "--charset=UTF-8"]
   s.require_paths	  = ["lib"]
