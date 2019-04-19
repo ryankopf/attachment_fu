@@ -17,7 +17,9 @@ module Technoweenie # :nodoc:
 
         protected
           def process_attachment
+            Rails.logger.info "Processing image."
             return unless process_attachment_without_processing && image?
+            Rails.logger.info "Processing Image Step 2."
             with_image do |img|
               self.width  = img.width  if respond_to?(:width)
               self.height = img.height if respond_to?(:height)
