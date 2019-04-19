@@ -533,7 +533,9 @@ module Technoweenie # :nodoc:
                 end
               }
             end
+            Rails.logger.info "Kaw. "
             save_to_storage
+            Rails.logger.info "Kaw Kaw."
             @temp_paths.clear
             @saved_attachment = nil
             #callback :after_attachment_saved
