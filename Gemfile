@@ -6,7 +6,6 @@ group :test, :development do
   gem 'sqlite3'
   gem 'ryankopf-attachment_fu', :path => '.'
   gem 'rmagick'
-  gem 'core_image'
   gem 'mini_magick'
   gem 'aws-sdk-v1', '~> 1.61.0'
   gem 'test-unit'

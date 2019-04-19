@@ -1,6 +1,6 @@
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
-    @@default_processors = %w(ImageScience Rmagick MiniMagick Gd2 CoreImage)
+    @@default_processors = %w(ImageScience Rmagick MiniMagick Gd2)
     @@tempfile_path      = File.join(Rails.root, 'tmp', 'attachment_fu')
     @@content_types      = [
       'image/jpeg',
@@ -55,7 +55,7 @@ module Technoweenie # :nodoc:
       #        specify per-thumbnail or per-general-thumbnail-"size" JPEG qualities. (which can be useful when you have a
       #        _lot_ of thumbnail options).  Surface example:  +{ '<2000' => 90, '>=2000' => 75 }+.
       #      Defaults vary depending on the processor (ImageScience: 100%, Rmagick/MiniMagick/Gd2: 75%,
-      #      CoreImage: auto-adjust). Note that only tdd-image_science (available from GitHub) currently supports explicit JPEG quality;
+      #      ). Note that only tdd-image_science (available from GitHub) currently supports explicit JPEG quality;
       #      the default image_science currently forces 100%.
       # *  <tt>:thumbnails</tt> - Specifies a set of thumbnails to generate.  This accepts a hash of filename suffixes and
       #      RMagick resizing options.  If you have a polymorphic parent relationship, you can provide parent-type-specific
@@ -363,8 +363,8 @@ module Technoweenie # :nodoc:
       #
       #   @attachment = Attachment.create! params[:attachment]
       #
-      # TODO: Allow it to work with Merb tempfiles too.
       def uploaded_data=(file_data)
+        Rails.logger.info "Well we're here."
         if file_data.respond_to?(:content_type)
           return nil if file_data.size == 0
           self.content_type = file_data.content_type
@@ -381,6 +381,7 @@ module Technoweenie # :nodoc:
         else
           file_data.respond_to?(:tempfile) ? self.temp_paths.unshift( file_data.tempfile.path ) : self.temp_paths.unshift( file_data.path )
         end
+        Rails.logger.info "Well we're here #{self.content_type}."
       end
 
       # Gets the latest temp path from the collection of temp paths.  While working with an attachment,

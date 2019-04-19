@@ -138,7 +138,7 @@ This method accepts the options in a hash:
 
 [:processor]
     Sets the image processor to use for resizing of the attached image. Options
-    include ImageScience, Rmagick, MiniMagick, Gd2 and CoreImage. Default is
+    include ImageScience, Rmagick, MiniMagick, Gd2. Default is
     whatever is installed.
 
 [:uuid_primary_key]
