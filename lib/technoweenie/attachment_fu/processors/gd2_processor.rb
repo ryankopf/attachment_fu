@@ -4,8 +4,8 @@ module Technoweenie # :nodoc:
       module Gd2Processor
         def self.included(base)
           base.send :extend, ClassMethods
-          base.send :alias_method, :process_attachment_without_processing, :process_attachment
-          base.send :alias_method, :process_attachment, :process_attachment_with_processing
+          #base.send :alias_method, :process_attachment_without_processing, :process_attachment
+          #base.send :alias_method, :process_attachment, :process_attachment_with_processing
         end
         
         module ClassMethods
@@ -17,7 +17,7 @@ module Technoweenie # :nodoc:
         end
 
         protected
-          def process_attachment_with_processing
+          def process_attachment
             return unless process_attachment_without_processing && image?
             with_image do |img|
               resize_image_or_thumbnail! img
