@@ -4,8 +4,6 @@ module Technoweenie # :nodoc:
       module ImageScienceProcessor
         def self.included(base)
           base.send :extend, ClassMethods
-          #base.alias_method :process_attachment_without_processing, :process_attachment
-          #base.alias_method :process_attachment, :process_attachment_with_processing
         end
 
         module ClassMethods
@@ -29,6 +27,7 @@ module Technoweenie # :nodoc:
 
           # Performs the actual resizing operation for a thumbnail
           def resize_image(img, size)
+            Rails.logger.info "Resizing image."
             # create a dummy temp file to write to
             # ImageScience doesn't handle all gifs properly, so it converts them to
             # pngs for thumbnails.  It has something to do with trying to save gifs

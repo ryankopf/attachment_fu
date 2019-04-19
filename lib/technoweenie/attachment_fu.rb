@@ -548,6 +548,7 @@ module Technoweenie # :nodoc:
 
         # Resizes the given processed img object with either the attachment resize options or the thumbnail resize options.
         def resize_image_or_thumbnail!(img)
+          Rails.logger.info "Resizing image or thumbnail."
           if (!respond_to?(:parent_id) || parent_id.nil?) && attachment_options[:resize_to] # parent image
             resize_image(img, attachment_options[:resize_to])
           elsif thumbnail_resize_options # thumbnail
