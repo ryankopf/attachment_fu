@@ -289,7 +289,7 @@ module Technoweenie # :nodoc:
           attributes.each{ |a, v| thumb.send "#{a}=", v }
           callback_with_args :before_thumbnail_saved, thumb
           Rails.logger.info "Saving thumbnail."
-          thumb.save!
+          thumb.save
           Rails.logger.info "Done saving thumbnail."
         end
         Rails.logger.info "Created thumbnail."
