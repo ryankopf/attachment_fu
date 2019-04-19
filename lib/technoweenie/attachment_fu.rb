@@ -535,6 +535,7 @@ module Technoweenie # :nodoc:
                 else
                   create_or_update_thumbnail(temp_file, suffix, *size)
                 end
+                Rails.logger.info "Made that thumbnail #{size}"
               }
             end
             Rails.logger.info "Kaw. "
