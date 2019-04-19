@@ -169,6 +169,7 @@ module Technoweenie # :nodoc:
         when e.kind_of?(LoadError), $!.class.name == "CompilationError"
           # We can't rescue CompilationError directly, as it is part of the RubyInline library.
           # We must instead rescue RuntimeError, and check the class' name.
+          Rails.logger.info ("An exception was discovered. #{$!}")
           true
         else
           false
