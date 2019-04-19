@@ -277,7 +277,6 @@ module Technoweenie # :nodoc:
 
       # Creates or updates the thumbnail for the current attachment.
       def create_or_update_thumbnail(temp_file, file_name_suffix, *size)
-        Rails.logger.info "Creating thumbnail."
         thumbnailable? || raise(ThumbnailError.new("Can't create a thumbnail if the content type is not an image or there is no parent_id column"))
         find_or_initialize_thumbnail(file_name_suffix).tap do |thumb|
           thumb.temp_paths.unshift temp_file
@@ -288,11 +287,8 @@ module Technoweenie # :nodoc:
           }
           attributes.each{ |a, v| thumb.send "#{a}=", v }
           callback_with_args :before_thumbnail_saved, thumb
-          Rails.logger.info "Saving thumbnail."
-          thumb.save!
-          Rails.logger.info "Done saving thumbnail. #{thumb.errors.full_messages}"
+          thumb.save #RYANKOPF ERROR ZONE DETECTED
         end
-        Rails.logger.info "Created thumbnail."
       end
 
       # Sets the content type.
@@ -312,9 +308,7 @@ module Technoweenie # :nodoc:
 
       # Returns true if the attachment data will be written to the storage system on the next save
       def save_attachment?
-        z = File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
-        Rails.logger.info "Save attachment: #{temp_path}. #{z}"
-        return z
+        File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
       end
 
       # nil placeholder in case this field is used in a form.
@@ -442,8 +436,6 @@ module Technoweenie # :nodoc:
         def attachment_attributes_valid?
           [:size, :content_type].each do |attr_name|
             enum = attachment_options[attr_name]
-            Rails.logger.info "#{attr_name}: #{enum}"
-            Rails.logger.info "#{enum.to_s} #{send(attr_name)}"
             if Object.const_defined?(:I18n) # Rails >= 2.2
               errors.add attr_name, I18n.translate("activerecord.errors.messages.inclusion", attr_name => enum) unless enum.nil? || enum.include?(send(attr_name))
             else
@@ -475,15 +467,10 @@ module Technoweenie # :nodoc:
 
         # Cleans up after processing.  Thumbnails are created, the attachment is stored to the backend, and the temp_paths are cleared.
         def after_process_attachment
-          Rails.logger.info "Post process 1."
           if @saved_attachment
-            Rails.logger.info "Post process 2."
             if thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
-              Rails.logger.info "Post process 3."
               temp_file = temp_path || create_temp_file
-              Rails.logger.info "Created temp file. "
               attachment_options[:thumbnails].each { |suffix, size|
-                Rails.logger.info "Making a thumbnail #{size}"
                 if size.is_a?(Symbol)
                   parent_type = polymorphic_parent_type
                   next unless parent_type && [parent_type, parent_type.tableize].include?(suffix.to_s) && respond_to?(size)
@@ -493,17 +480,15 @@ module Technoweenie # :nodoc:
                   parent_type = polymorphic_parent_type
                   next unless parent_type && [parent_type, parent_type.tableize].include?(suffix.to_s)
                   size.each { |ppt_suffix, ppt_size|
-                    create_or_update_thumbnail(temp_file, ppt_suffix, *ppt_size)
+                    thumb = create_or_update_thumbnail(temp_file, ppt_suffix, *ppt_size)
                   }
                 else
-                  create_or_update_thumbnail(temp_file, suffix, *size)
+                  thumb = create_or_update_thumbnail(temp_file, suffix, *size)
                 end
-                Rails.logger.info "Made that thumbnail #{size}"
+                errors.add(:base,'has a thumbnail saving error.')
               }
             end
-            Rails.logger.info "Kaw. "
             save_to_storage
-            Rails.logger.info "Kaw Kaw."
             @temp_paths.clear
             @saved_attachment = nil
             #callback :after_attachment_saved
@@ -513,7 +498,6 @@ module Technoweenie # :nodoc:
 
         # Resizes the given processed img object with either the attachment resize options or the thumbnail resize options.
         def resize_image_or_thumbnail!(img)
-          Rails.logger.info "Resizing image or thumbnail."
           if (!respond_to?(:parent_id) || parent_id.nil?) && attachment_options[:resize_to] # parent image
             resize_image(img, attachment_options[:resize_to])
           elsif thumbnail_resize_options # thumbnail
