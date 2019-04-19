@@ -468,6 +468,8 @@ module Technoweenie # :nodoc:
         # Cleans up after processing.  Thumbnails are created, the attachment is stored to the backend, and the temp_paths are cleared.
         def after_process_attachment
           if @saved_attachment
+            attachment_attributes_valid?
+            return unless self.errors.empty?
             if thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
               temp_file = temp_path || create_temp_file
               attachment_options[:thumbnails].each { |suffix, size|
