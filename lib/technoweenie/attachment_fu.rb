@@ -510,8 +510,11 @@ module Technoweenie # :nodoc:
 
         # Cleans up after processing.  Thumbnails are created, the attachment is stored to the backend, and the temp_paths are cleared.
         def after_process_attachment
+          Rails.logger.info "Post process 1."
           if @saved_attachment
+            Rails.logger.info "Post process 2."
             if thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
+              Rails.logger.info "Post process 3."
               temp_file = temp_path || create_temp_file
               attachment_options[:thumbnails].each { |suffix, size|
                 if size.is_a?(Symbol)
