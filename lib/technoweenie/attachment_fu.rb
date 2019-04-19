@@ -290,7 +290,7 @@ module Technoweenie # :nodoc:
           callback_with_args :before_thumbnail_saved, thumb
           Rails.logger.info "Saving thumbnail."
           thumb.save
-          Rails.logger.info "Done saving thumbnail. #{thumb.errors}"
+          Rails.logger.info "Done saving thumbnail. #{thumb.errors.full_messages}"
         end
         Rails.logger.info "Created thumbnail."
       end
