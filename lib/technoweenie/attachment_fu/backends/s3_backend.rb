@@ -428,7 +428,7 @@ module Technoweenie # :nodoc:
                     'Content-Disposition' => "attachment; filename=\"#{filename}\""
                 )
               else
-                Rails.logger.warn "Savingg To Storage."
+                Rails.logger.warn "Saving To Storage."
                 obj = s3_resource.bucket(bucket_name).object(full_filename[1..-1])
                 puts "UPLOADING: "
                 Rails.logger.warn full_filename[1..-1]

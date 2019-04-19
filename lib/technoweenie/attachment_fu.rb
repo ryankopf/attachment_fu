@@ -396,7 +396,6 @@ module Technoweenie # :nodoc:
         if temp_data.nil?
           self.temp_data = current_data
         end
-
         self.class.with_image(temp_path, &block)
       end
 
