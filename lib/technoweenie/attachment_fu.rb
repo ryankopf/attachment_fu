@@ -516,7 +516,9 @@ module Technoweenie # :nodoc:
             if thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
               Rails.logger.info "Post process 3."
               temp_file = temp_path || create_temp_file
+              Rails.logger.info "Created temp file. "
               attachment_options[:thumbnails].each { |suffix, size|
+                Rails.logger.info "Making a thumbnail"
                 if size.is_a?(Symbol)
                   parent_type = polymorphic_parent_type
                   next unless parent_type && [parent_type, parent_type.tableize].include?(suffix.to_s) && respond_to?(size)
