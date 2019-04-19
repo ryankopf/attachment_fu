@@ -348,6 +348,8 @@ module Technoweenie # :nodoc:
       # Returns true if the attachment data will be written to the storage system on the next save
       def save_attachment?
         Rails.logger.info "Well we're here on Save attachment. #{temp_path}."
+        z = File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
+        Rails.logger.info z
         File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
       end
 
