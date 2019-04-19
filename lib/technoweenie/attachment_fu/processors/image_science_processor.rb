@@ -27,7 +27,7 @@ module Technoweenie # :nodoc:
 
           # Performs the actual resizing operation for a thumbnail
           def resize_image(img, size)
-            Rails.logger.info "Resizing image."
+            Rails.logger.info "Resizing image. #{img} #{size}"
             # create a dummy temp file to write to
             # ImageScience doesn't handle all gifs properly, so it converts them to
             # pngs for thumbnails.  It has something to do with trying to save gifs
