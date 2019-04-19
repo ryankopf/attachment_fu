@@ -488,7 +488,7 @@ module Technoweenie # :nodoc:
                 errors.add(:base,'has a thumbnail saving error.') unless thumb.errors.empty?
               }
             end
-            save_to_storage
+            save_to_storage if self.errors.empty?
             @temp_paths.clear
             @saved_attachment = nil
             #callback :after_attachment_saved
