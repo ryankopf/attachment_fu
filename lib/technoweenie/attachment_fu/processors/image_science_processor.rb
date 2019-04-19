@@ -74,6 +74,7 @@ module Technoweenie # :nodoc:
                 img.resize(new_size[0], new_size[1], &grab_dimensions)
               end
             end
+            Rails.logger.info "Resized image. #{img}"
           end
       end
     end
