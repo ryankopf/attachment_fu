@@ -485,7 +485,7 @@ module Technoweenie # :nodoc:
                 else
                   thumb = create_or_update_thumbnail(temp_file, suffix, *size)
                 end
-                errors.add(:base,'has a thumbnail saving error.') unless thumb.errors.empty?
+                errors.add(:base,"error saving thumbnail. #{thumb.errors.full_messages}") unless thumb.errors.empty?
               }
             end
             save_to_storage if self.errors.empty?
