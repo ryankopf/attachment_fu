@@ -214,7 +214,9 @@ module Technoweenie # :nodoc:
         #     end
         #   end
         def after_resize(&block)
+          Rails.logger.info "Broken? #{self.attribute_names}"
           write_inheritable_array(:after_resize, [block])
+          Rails.logger.info "No."
         end
 
         # Callback after an attachment has been saved either to the file system or the DB.
