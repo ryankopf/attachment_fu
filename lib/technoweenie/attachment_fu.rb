@@ -347,9 +347,8 @@ module Technoweenie # :nodoc:
 
       # Returns true if the attachment data will be written to the storage system on the next save
       def save_attachment?
-        Rails.logger.info "Well we're here on Save attachment. #{temp_path}."
         z = File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
-        Rails.logger.info z
+        Rails.logger.info "Save attachment: #{temp_path}. #{z}"
         File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
       end
 
@@ -518,7 +517,7 @@ module Technoweenie # :nodoc:
               temp_file = temp_path || create_temp_file
               Rails.logger.info "Created temp file. "
               attachment_options[:thumbnails].each { |suffix, size|
-                Rails.logger.info "Making a thumbnail"
+                Rails.logger.info "Making a thumbnail #{size}"
                 if size.is_a?(Symbol)
                   parent_type = polymorphic_parent_type
                   next unless parent_type && [parent_type, parent_type.tableize].include?(suffix.to_s) && respond_to?(size)
@@ -554,43 +553,9 @@ module Technoweenie # :nodoc:
           end
         end
 
-        if defined?(Rails) && Rails::VERSION::MAJOR >= 3
-          def callback_with_args(method, arg = self)
-            if respond_to?(method)
-              send(method, arg)
-            end
-          end
-        # Yanked from ActiveRecord::Callbacks, modified so I can pass args to the callbacks besides self.
-        # Only accept blocks, however
-        elsif ActiveSupport.const_defined?(:Callbacks)
-          # Rails 2.1 and beyond!
-          def callback_with_args(method, arg = self)
-            notify(method)
-
-            result = run_callbacks(method, { :object => arg }) { |result, object| result == false }
-
-            if result != false && respond_to_without_attributes?(method)
-              result = send(method)
-            end
-
-            result
-          end
-
-          def run_callbacks(kind, options = {}, &block)
-            options.reverse_merge!( :object => self )
-            self.class.send("#{kind}_callback_chain").run(options[:object], options, &block)
-          end
-        else
-          # Rails 2.0
-          def callback_with_args(method, arg = self)
-            notify(method)
-
-            result = nil
-            callbacks_for(method).each do |callback|
-              result = callback.call(self, arg)
-              return false if result == false
-            end
-            result
+        def callback_with_args(method, arg = self)
+          if respond_to?(method)
+            send(method, arg)
           end
         end
 
