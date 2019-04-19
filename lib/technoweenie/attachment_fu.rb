@@ -204,48 +204,6 @@ module Technoweenie # :nodoc:
         #end
       end
 
-      unless defined?(::ActiveSupport::Callbacks)
-        # Callback after an image has been resized.
-        #
-        #   class Foo < ActiveRecord::Base
-        #     acts_as_attachment
-        #     after_resize do |record, img|
-        #       record.aspect_ratio = img.columns.to_f / img.rows.to_f
-        #     end
-        #   end
-        def after_resize(&block)
-          Rails.logger.info "Broken? #{self.attribute_names}"
-          write_inheritable_array(:after_resize, [block])
-          Rails.logger.info "No."
-        end
-
-        # Callback after an attachment has been saved either to the file system or the DB.
-        # Only called if the file has been changed, not necessarily if the record is updated.
-        #
-        #   class Foo < ActiveRecord::Base
-        #     acts_as_attachment
-        #     after_attachment_saved do |record|
-        #       ...
-        #     end
-        #   end
-        def after_attachment_saved(&block)
-          write_inheritable_array(:after_attachment_saved, [block])
-        end
-
-        # Callback before a thumbnail is saved.  Use this to pass any necessary extra attributes that may be required.
-        #
-        #   class Foo < ActiveRecord::Base
-        #     acts_as_attachment
-        #     before_thumbnail_saved do |thumbnail|
-        #       record = thumbnail.parent
-        #       ...
-        #     end
-        #   end
-        def before_thumbnail_saved(&block)
-          write_inheritable_array(:before_thumbnail_saved, [block])
-        end
-      end
-
       # Get the thumbnail class, which is the current attachment class by default.
       # Configure this with the :thumbnail_class option.
       def thumbnail_class
@@ -354,7 +312,7 @@ module Technoweenie # :nodoc:
       def save_attachment?
         z = File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
         Rails.logger.info "Save attachment: #{temp_path}. #{z}"
-        File.file?(temp_path.class == String ? temp_path : temp_path.to_filename)
+        return z
       end
 
       # nil placeholder in case this field is used in a form.
