@@ -172,7 +172,6 @@ module Technoweenie # :nodoc:
         class ConfigFileNotFoundError < StandardError; end
 
         def self.included(base) #:nodoc:
-          Rails.logger.info "Well we're here on S32."
           mattr_reader :bucket_name, :s3_config
           begin
             require 'aws-sdk'
@@ -198,9 +197,7 @@ module Technoweenie # :nodoc:
           s3_resource = Aws::S3::Resource.new(region:'us-east-1',access_key_id: s3_config[:access_key_id],secret_access_key: s3_config[:secret_access_key])
           class_variable_set(:@@s3_resource,s3_resource)
           base.before_update :rename_file
-          Rails.logger.info "Well we're here on S3."
         end
-
 
         def self.protocol
           @protocol ||= s3_config[:use_ssl] ? 'https://' : 'http://'
@@ -416,6 +413,7 @@ module Technoweenie # :nodoc:
           end
 
           def save_to_storage
+            Rails.logger.info "Save To Storage."
             if save_attachment?
               if attachment_options[:encrypted_storage]
                 S3Object.store(
@@ -429,6 +427,7 @@ module Technoweenie # :nodoc:
                     'Content-Disposition' => "attachment; filename=\"#{filename}\""
                 )
               else
+                Rails.logger.info "Savingg To Storage."
                 obj = s3_resource.bucket(bucket_name).object(full_filename[1..-1])
                 puts "UPLOADING: "
                 Rails.logger.warn full_filename[1..-1]
