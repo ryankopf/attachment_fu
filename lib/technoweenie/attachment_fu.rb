@@ -514,7 +514,7 @@ module Technoweenie # :nodoc:
           Rails.logger.info "Post process 1."
           if @saved_attachment
             Rails.logger.info "Post process 2."
-            if thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
+            if false && thumbnailable? && !attachment_options[:thumbnails].blank? && parent_id.nil? #XZ1
               Rails.logger.info "Post process 3."
               temp_file = temp_path || create_temp_file
               Rails.logger.info "Created temp file. "
