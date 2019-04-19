@@ -364,7 +364,6 @@ module Technoweenie # :nodoc:
       #   @attachment = Attachment.create! params[:attachment]
       #
       def uploaded_data=(file_data)
-        Rails.logger.info "Well we're here."
         if file_data.respond_to?(:content_type)
           return nil if file_data.size == 0
           self.content_type = file_data.content_type
@@ -381,7 +380,6 @@ module Technoweenie # :nodoc:
         else
           file_data.respond_to?(:tempfile) ? self.temp_paths.unshift( file_data.tempfile.path ) : self.temp_paths.unshift( file_data.path )
         end
-        Rails.logger.info "Well we're here #{self.content_type}."
       end
 
       # Gets the latest temp path from the collection of temp paths.  While working with an attachment,

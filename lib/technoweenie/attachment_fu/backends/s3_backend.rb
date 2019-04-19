@@ -172,6 +172,7 @@ module Technoweenie # :nodoc:
         class ConfigFileNotFoundError < StandardError; end
 
         def self.included(base) #:nodoc:
+          Rails.logger.info "Well we're here on S32."
           mattr_reader :bucket_name, :s3_config
           begin
             require 'aws-sdk'
@@ -197,6 +198,7 @@ module Technoweenie # :nodoc:
           s3_resource = Aws::S3::Resource.new(region:'us-east-1',access_key_id: s3_config[:access_key_id],secret_access_key: s3_config[:secret_access_key])
           class_variable_set(:@@s3_resource,s3_resource)
           base.before_update :rename_file
+          Rails.logger.info "Well we're here on S3."
         end
 
 
