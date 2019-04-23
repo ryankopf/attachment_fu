@@ -413,9 +413,7 @@ module Technoweenie # :nodoc:
           end
 
           def save_to_storage
-            Rails.logger.warn "Save To Storage."
             if save_attachment?
-              Rails.logger.warn "TRUE"
               if attachment_options[:encrypted_storage]
                 S3Object.store(
                     full_filename,
@@ -428,9 +426,7 @@ module Technoweenie # :nodoc:
                     'Content-Disposition' => "attachment; filename=\"#{filename}\""
                 )
               else
-                Rails.logger.warn "Saving To Storage."
                 obj = s3_resource.bucket(bucket_name).object(full_filename[1..-1])
-                puts "UPLOADING: "
                 Rails.logger.warn full_filename[1..-1]
                 Rails.logger.warn temp_path
                 Rails.logger.warn obj.upload_file(temp_path,{
