@@ -328,7 +328,7 @@ module Technoweenie # :nodoc:
       def uploaded_data=(file_data)
         if file_data.respond_to?(:content_type)
           return nil if file_data.size == 0
-          self.content_type = file_data.content_type
+          self.content_type = detect_mimetype(file_data.content_type)
           self.filename     = file_data.original_filename if respond_to?(:filename)
         else
           return nil if file_data.blank? || file_data['size'] == 0
@@ -341,6 +341,14 @@ module Technoweenie # :nodoc:
           set_temp_data file_data.read
         else
           file_data.respond_to?(:tempfile) ? self.temp_paths.unshift( file_data.tempfile.path ) : self.temp_paths.unshift( file_data.path )
+        end
+      end
+
+      def detect_mimetype(file_data)
+        if file_data.content_type.strip == "application/octet-stream"
+          return File.mime_type?(file_data.original_filename)
+        else
+          return file_data.content_type
         end
       end
 
