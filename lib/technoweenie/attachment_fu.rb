@@ -31,7 +31,8 @@ module Technoweenie # :nodoc:
       'application/png',
       'application/x-png',
       'image/gi_',
-      'image/x-citrix-pjpeg'
+      'image/x-citrix-pjpeg',
+      'application/octet-stream'
     ]
     mattr_reader :content_types, :tempfile_path, :default_processors
     mattr_writer :tempfile_path
