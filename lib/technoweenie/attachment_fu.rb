@@ -328,7 +328,7 @@ module Technoweenie # :nodoc:
       def uploaded_data=(file_data)
         if file_data.respond_to?(:content_type)
           return nil if file_data.size == 0
-          self.content_type = detect_mimetype(file_data.content_type)
+          self.content_type = detect_mimetype(file_data)
           self.filename     = file_data.original_filename if respond_to?(:filename)
         else
           return nil if file_data.blank? || file_data['size'] == 0
