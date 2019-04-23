@@ -174,29 +174,6 @@ rescue MissingSourceFile
   puts "no ImageScience"
 end
 
-begin
-  class CoreImageAttachment < ActiveRecord::Base
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :core_image, :thumbnails => { :thumb => [50, 51], :geometry => '31>', :aspect => '25x25!' }, :resize_to => 55
-  end
-
-  class LowerQualityCoreImageAttachment < CoreImageAttachment
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :core_image, :thumbnails => { :thumb => [50, 51], :geometry => '31>', :aspect => '25x25!' }, :resize_to => 55,
-      :jpeg_quality => 50
-  end
-
-  class CoreImageWithPerThumbJpegAttachment < CoreImageAttachment
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :core_image,
-      :resize_to => '100x100',
-      :thumbnails => { :thumb => [50, 50], :editorial => '300x120', :avatar => '64x64!' },
-      :jpeg_quality => { :thumb => 90, '<5000' => 80, '>=5000' => 75 }
-  end
-rescue MissingSourceFile
-  puts $!.message
-  puts "no CoreImage"
-end
 
 begin
   class MiniMagickAttachment < ActiveRecord::Base
@@ -257,30 +234,6 @@ rescue MissingSourceFile
   puts "no Mini Magick"
 end
 
-begin
-  class GD2Attachment < ActiveRecord::Base
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :gd2, :thumbnails => { :thumb => [50, 51], :geometry => '31>', :aspect => '25x25!' }, :resize_to => 55
-  end
-
-  class LowerQualityGD2Attachment < GD2Attachment
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :gd2, :thumbnails => { :thumb => [50, 51], :geometry => '31>', :aspect => '25x25!' }, :resize_to => 55,
-      :jpeg_quality => 50
-  end
-
-  class GD2WithPerThumbJpegAttachment < GD2Attachment
-    has_attachment :path_prefix => 'tmp/attachment_fu',
-      :processor => :gd2,
-      :resize_to => '100x100',
-      :thumbnails => { :thumb => [50, 50], :editorial => '300x120', :avatar => '64x64!' },
-      :jpeg_quality => { :thumb => 90, '<5000' => 80, '>=5000' => 75 }
-  end
-rescue MissingSourceFile
-  puts $!.message
-  puts "no GD2"
-end
-
 
 begin
   class S3Attachment < ActiveRecord::Base
@@ -297,17 +250,3 @@ rescue
   puts "S3 error: #{$!}"
 end
 
-begin
-  class CloudFilesAttachment < ActiveRecord::Base
-    has_attachment :storage => :cloud_files, :processor => :rmagick, :cloudfiles_config_path => File.join(File.dirname(__FILE__), '../rackspace_cloudfiles.yml')
-    validates_as_attachment
-  end
-
-  class CloudFilesWithPathPrefixAttachment < CloudFilesAttachment
-    has_attachment :storage => :cloud_files, :path_prefix => 'some/custom/path/prefix', :processor => :rmagick
-    validates_as_attachment
-  end
-
-rescue
-  puts "CloudFiles error: #{$!}"
-end

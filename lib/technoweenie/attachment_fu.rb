@@ -1,6 +1,6 @@
 module Technoweenie # :nodoc:
   module AttachmentFu # :nodoc:
-    @@default_processors = %w(ImageScience Rmagick MiniMagick Gd2)
+    @@default_processors = %w(ImageScience Rmagick MiniMagick)
     @@tempfile_path      = File.join(Rails.root, 'tmp', 'attachment_fu')
     @@content_types      = [
       'image/jpeg',
@@ -54,7 +54,7 @@ module Technoweenie # :nodoc:
       #        A surface boundary is a string starting with either '<' or '>=', followed by a number of pixels.  This lets you
       #        specify per-thumbnail or per-general-thumbnail-"size" JPEG qualities. (which can be useful when you have a
       #        _lot_ of thumbnail options).  Surface example:  +{ '<2000' => 90, '>=2000' => 75 }+.
-      #      Defaults vary depending on the processor (ImageScience: 100%, Rmagick/MiniMagick/Gd2: 75%,
+      #      Defaults vary depending on the processor (ImageScience: 100%, Rmagick/MiniMagick: 75%,
       #      ). Note that only tdd-image_science (available from GitHub) currently supports explicit JPEG quality;
       #      the default image_science currently forces 100%.
       # *  <tt>:thumbnails</tt> - Specifies a set of thumbnails to generate.  This accepts a hash of filename suffixes and
