@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.description	= %q{This is a fork of Steven Pothoven's fork of Rick Olson's attachment_fu, adding Rails 5 support.}
   s.email			  = %q{ryan@ryankopf.com}
   s.homepage		= %q{http://github.com/ryankopf/attachment_fu}
-  s.version			= "5.2.0.23"
+  s.version			= "5.2.1"
   s.date			  = %q{2019-04-18}
 
   s.files			  = Dir.glob("{lib}/**/*") + %w( CHANGELOG LICENSE README.rdoc amazon_s3.yml.tpl rackspace_cloudfiles.yml.tpl )
