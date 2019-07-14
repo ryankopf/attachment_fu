@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files  = ["README.rdoc"]
   s.rdoc_options	  = ["--inline-source", "--charset=UTF-8"]
   s.require_paths	  = ["lib"]
-  s.rubyforge_project = "nowarning"
   s.rubygems_version  = %q{1.8.29}
 
   s.requirements << 'aws-sdk-v1, ~> 1.61.0'
