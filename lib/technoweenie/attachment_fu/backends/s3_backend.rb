@@ -406,11 +406,10 @@ module Technoweenie # :nodoc:
                                       :server_side_encryption => :aes256,
                                       :content_disposition => "attachment; filename=\"#{filename}\""})
             else
-              obj.copy_from(old_obj, {:cache_control => attachment_options[:cache_control],
+              #obj.copy_from(old_obj, {:cache_control => attachment_options[:cache_control],
                                       :acl => attachment_options[:s3_access]})
             end
-
-            old_obj.delete
+            #old_obj.delete
             @old_filename = nil
             true
           end
