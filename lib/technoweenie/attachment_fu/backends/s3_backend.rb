@@ -395,8 +395,10 @@ module Technoweenie # :nodoc:
 
             old_full_filename = File.join(base_path, @old_filename)
             bucket = s3_resource.bucket(bucket_name) # Fix 2020.
-            old_obj = bucket.objects[old_full_filename]
-            obj = bucket.objects[full_filename]
+            #old_obj = bucket.objects[old_full_filename]
+            #obj = bucket.objects[full_filename]
+            old_obj = bucket.objects(old_full_filename)
+            obj = bucket.objects(full_filename)
 
             if attachment_options[:encrypted_storage]
               obj.copy_from(old_obj, {:cache_control => attachment_options[:cache_control],
