@@ -433,7 +433,7 @@ module Technoweenie # :nodoc:
                 Rails.logger.warn temp_path
                 Rails.logger.warn obj.upload_file(temp_path,{
                     acl: 'public-read',
-                    cache_control: 'max-age=2592000'
+                    cache_control: 'max-age=31536000'
                 })
               end
             end
