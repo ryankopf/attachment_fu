@@ -316,6 +316,8 @@ module Technoweenie # :nodoc:
         def public_filename(*args)
           if attachment_options[:cloudfront]
             cloudfront_url(*args)
+          elsif attachment_options[:custom_base]
+            File.join(attachment_options[:custom_base], bucket_name , full_filename(thumbnail))
           else
             s3_url(*args)
           end
