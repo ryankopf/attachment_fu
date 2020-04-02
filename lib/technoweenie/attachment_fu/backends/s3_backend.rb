@@ -215,6 +215,10 @@ module Technoweenie # :nodoc:
           @distribution_domain = s3_config[:distribution_domain]
         end
 
+        def self.custom_base
+          @custom_base = s3_config[:custom_base]
+        end
+
         module ClassMethods
           def s3_protocol
             Technoweenie::AttachmentFu::Backends::S3Backend.protocol
@@ -230,6 +234,10 @@ module Technoweenie # :nodoc:
 
           def cloudfront_distribution_domain
             Technoweenie::AttachmentFu::Backends::S3Backend.distribution_domain
+          end
+
+          def custom_base_domain
+            Technoweenie::AttachmentFu::Backends::S3Backend.custom_base
           end
         end
 
@@ -313,11 +321,15 @@ module Technoweenie # :nodoc:
           s3_protocol + cloudfront_distribution_domain + "/" + full_filename(thumbnail)
         end
 
+        def custom_url(thumbnail = nil)
+          File.join(custom_base_domain, bucket_name , full_filename(thumbnail))
+        end
+
         def public_filename(*args)
           if attachment_options[:cloudfront]
             cloudfront_url(*args)
           elsif attachment_options[:custom_base]
-            File.join(attachment_options[:custom_base], bucket_name , full_filename(thumbnail))
+            custom_url(*args)
           else
             s3_url(*args)
           end
@@ -383,6 +395,10 @@ module Technoweenie # :nodoc:
 
         def cloudfront_distribution_domain
           Technoweenie::AttachmentFu::Backends::S3Backend.distribution_domain
+        end
+
+        def custom_base_domain
+          Technoweenie::AttachmentFu::Backends::S3Backend.custom_base
         end
 
         protected
