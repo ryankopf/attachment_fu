@@ -219,6 +219,10 @@ module Technoweenie # :nodoc:
           @custom_base = s3_config[:custom_base]
         end
 
+        def self.custom_fullpath
+          @custom_fullpath = s3_config[:custom_fullpath]
+        end
+
         module ClassMethods
           def s3_protocol
             Technoweenie::AttachmentFu::Backends::S3Backend.protocol
@@ -238,6 +242,10 @@ module Technoweenie # :nodoc:
 
           def custom_base_domain
             Technoweenie::AttachmentFu::Backends::S3Backend.custom_base
+          end
+
+          def custom_fullpath_domain
+            Technoweenie::AttachmentFu::Backends::S3Backend.custom_fullpath
           end
         end
 
@@ -325,11 +333,17 @@ module Technoweenie # :nodoc:
           File.join(custom_base_domain, bucket_name , full_filename(thumbnail))
         end
 
+        def custom_fullpath_url(thumbnail = nil)
+          File.join(custom_fullpath_domain, full_filename(thumbnail))
+        end
+
         def public_filename(*args)
           if attachment_options[:cloudfront]
             cloudfront_url(*args)
           elsif attachment_options[:custom_base]
             custom_url(*args)
+          elsif attachment_options[:custom_fullpath]
+            custom_fullpath_url(*args)
           else
             s3_url(*args)
           end
@@ -399,6 +413,10 @@ module Technoweenie # :nodoc:
 
         def custom_base_domain
           Technoweenie::AttachmentFu::Backends::S3Backend.custom_base
+        end
+
+        def custom_fullpath_domain
+          Technoweenie::AttachmentFu::Backends::S3Backend.custom_fullpath
         end
 
         protected
