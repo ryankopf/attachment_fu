@@ -420,6 +420,10 @@ module Technoweenie # :nodoc:
         end
 
         protected
+          def bucket
+            @bucket ||= s3_resource.bucket(bucket_name)
+          end
+
           # Called in the after_destroy callback
           def destroy_file
             true #obj = bucket.objects[full_filename]
