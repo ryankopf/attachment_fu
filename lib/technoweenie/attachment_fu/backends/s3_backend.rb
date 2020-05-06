@@ -406,7 +406,7 @@ module Technoweenie # :nodoc:
           if attachment_options[:encrypted_storage] && self.respond_to?(:encryption_key) && self.encryption_key != nil
             EncryptedData.decrypt_data(bucket.object(full_filename.delete_prefix('/')), self.encryption_key)
           else
-            bucket.object(full_filename)
+            bucket.object(full_filename.delete_prefix('/'))
           end
         end
 
