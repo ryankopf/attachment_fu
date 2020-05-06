@@ -396,9 +396,9 @@ module Technoweenie # :nodoc:
 
         def current_data # DEPRECATED!?
           if attachment_options[:encrypted_storage] && self.respond_to?(:encryption_key) && self.encryption_key != nil
-            EncryptedData.decrypt_data(bucket.object(full_filename.delete_prefix('/')).read, self.encryption_key)
+            EncryptedData.decrypt_data(bucket.object(full_filename.delete_prefix('/')), self.encryption_key)
           else
-            bucket.object(full_filename).read
+            bucket.object(full_filename)
           end
         end
 
