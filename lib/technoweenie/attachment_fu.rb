@@ -390,6 +390,9 @@ module Technoweenie # :nodoc:
       # Stub for creating a temp file from the attachment data.  This should be defined in the backend module.
       def create_temp_file() end
 
+      # Stub for downloading a temp file from the attachment data.  This should be defined in the backend module.
+      def download_to_temp_file() end
+
       # Allows you to work with a processed representation (RMagick, ImageScience, etc) of the attachment in a block.
       #
       #   @attachment.with_image do |img|
