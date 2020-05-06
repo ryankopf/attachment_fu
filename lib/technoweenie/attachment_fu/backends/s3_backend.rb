@@ -387,11 +387,26 @@ module Technoweenie # :nodoc:
           write_to_temp_file current_data
         end
 
-        def current_data
+        def download_to_temp_file
+          object = current_object
+          tempfile = Tempfile.new(random_tempfile_filename, ::Technoweenie::AttachmentFu.tempfile_path)
+          object.download_file(tempfile.path)
+          return tempfile
+        end
+
+        def current_data # DEPRECATED!?
           if attachment_options[:encrypted_storage] && self.respond_to?(:encryption_key) && self.encryption_key != nil
-            EncryptedData.decrypt_data(bucket.objects[full_filename].read, self.encryption_key)
+            EncryptedData.decrypt_data(bucket.object(full_filename.delete_prefix('/')).read, self.encryption_key)
           else
-            bucket.objects[full_filename].read
+            bucket.object(full_filename).read
+          end
+        end
+
+        def current_object
+          if attachment_options[:encrypted_storage] && self.respond_to?(:encryption_key) && self.encryption_key != nil
+            EncryptedData.decrypt_data(bucket.object(full_filename.delete_prefix('/')), self.encryption_key)
+          else
+            bucket.object(full_filename)
           end
         end
 

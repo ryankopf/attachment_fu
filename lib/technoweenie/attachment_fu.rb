@@ -288,7 +288,7 @@ module Technoweenie # :nodoc:
           }
           attributes.each{ |a, v| thumb.send "#{a}=", v }
           callback_with_args :before_thumbnail_saved, thumb
-          thumb.save #RYANKOPF ERROR ZONE DETECTED
+          thumb.save
         end
       end
 
