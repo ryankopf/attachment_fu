@@ -7,12 +7,17 @@ require "attachment_fu/processors/image_science_processor"
 require "attachment_fu/processors/mini_magick_processor"
 require "attachment_fu/processors/rmagick_processor"
 
-require 'geometry'
-ActiveRecord::Base.send(:extend, AttachmentFu::ActMethods)
-AttachmentFu.tempfile_path = ATTACHMENT_FU_TEMPFILE_PATH if Object.const_defined?(:ATTACHMENT_FU_TEMPFILE_PATH)
-FileUtils.mkdir_p AttachmentFu.tempfile_path
+
 
 module AttachmentFu # :nodoc:
+  ActiveSupport.on_load(:active_record) do
+    # self refers to ActiveRecord::Base
+    # self.include Antispam::Tools
+    require 'geometry'
+    self.send(:extend, AttachmentFu::ActMethods)
+    AttachmentFu.tempfile_path = ATTACHMENT_FU_TEMPFILE_PATH if Object.const_defined?(:ATTACHMENT_FU_TEMPFILE_PATH)
+    FileUtils.mkdir_p AttachmentFu.tempfile_path
+  end
   @@default_processors = %w(ImageScience Rmagick MiniMagick)
   # @@tempfile_path      = File.join(Rails.root, 'tmp', 'attachment_fu')
   @@tempfile_path      = File.join('/', 'tmp', 'attachment_fu')
