@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email			  = %q{ryan@ryankopf.com}
   s.homepage		= %q{http://github.com/ryankopf/attachment_fu}
   s.version			= AttachmentFu::VERSION
-  s.date			  = %q{2020-05-05}
+  s.date			  = %q{2021-01-30}
 
   s.files			  = Dir.glob("{lib}/**/*") + %w( CHANGELOG LICENSE README.rdoc amazon_s3.yml.tpl rackspace_cloudfiles.yml.tpl )
   s.extra_rdoc_files  = ["README.rdoc"]
