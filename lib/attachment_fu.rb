@@ -10,14 +10,6 @@ require "attachment_fu/processors/rmagick_processor"
 
 
 module AttachmentFu # :nodoc:
-  ActiveSupport.on_load(:active_record) do
-    # self refers to ActiveRecord::Base
-    # self.include Antispam::Tools
-    require 'geometry'
-    self.send(:extend, AttachmentFu::ActMethods)
-    AttachmentFu.tempfile_path = ATTACHMENT_FU_TEMPFILE_PATH if Object.const_defined?(:ATTACHMENT_FU_TEMPFILE_PATH)
-    FileUtils.mkdir_p AttachmentFu.tempfile_path
-  end
   @@default_processors = %w(ImageScience Rmagick MiniMagick)
   # @@tempfile_path      = File.join(Rails.root, 'tmp', 'attachment_fu')
   @@tempfile_path      = File.join('/', 'tmp', 'attachment_fu')
@@ -55,6 +47,15 @@ module AttachmentFu # :nodoc:
   ]
   mattr_reader :content_types, :tempfile_path, :default_processors
   mattr_writer :tempfile_path
+
+  ActiveSupport.on_load(:active_record) do
+    # self refers to ActiveRecord::Base
+    # self.include Antispam::Tools
+    require 'geometry'
+    self.send(:extend, AttachmentFu::ActMethods)
+    AttachmentFu.tempfile_path = ATTACHMENT_FU_TEMPFILE_PATH if Object.const_defined?(:ATTACHMENT_FU_TEMPFILE_PATH)
+    FileUtils.mkdir_p AttachmentFu.tempfile_path
+  end
 
   class ThumbnailError < StandardError;  end
   class AttachmentError < StandardError; end
