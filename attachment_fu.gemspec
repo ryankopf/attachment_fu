@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+require_relative "lib/attachment_fu/version"
 
 Gem::Specification.new do |s|
   s.name			  = %q{attachment_fu}
