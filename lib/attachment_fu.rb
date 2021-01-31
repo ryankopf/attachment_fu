@@ -1,6 +1,8 @@
 require "attachment_fu/version"
 require "attachment_fu/engine"
 require "attachment_fu/act_methods"
+require "attachment_fu/class_methods"
+require "attachment_fu/instance_methods"
 require "attachment_fu/backends/file_system_backend"
 require "attachment_fu/backends/s3_backend"
 require "attachment_fu/processors/image_science_processor"
