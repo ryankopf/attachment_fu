@@ -107,7 +107,7 @@ module AttachmentFu
     end
 
     def detect_mimetype(file_data)
-      if file_data.content_type.strip == "application/octet-stream"
+      if file_data.content_type.nil? || (file_data.content_type.strip == "application/octet-stream")
         return File.mime_type?(file_data.original_filename)
       else
         return file_data.content_type
