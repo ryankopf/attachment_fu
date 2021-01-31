@@ -1,8 +1,8 @@
 = attachment-fu
 
-{<img src="https://badge.fury.io/rb/pothoven-attachment_fu.svg" alt="Gem Version" />}[https://rubygems.org/gems/pothoven-attachment_fu]
-{<img src="http://ruby-gem-downloads-badge.herokuapp.com/pothoven-attachment_fu?type=total&color=brightgreen" />}[https://rubygems.org/gems/pothoven-attachment_fu]
-{<img src="http://ruby-gem-downloads-badge.herokuapp.com/pothoven-attachment_fu?color=brightgreen&label=for-this-version" />}[https://rubygems.org/gems/pothoven-attachment_fu]
+{<img src="https://badge.fury.io/rb/ryankopf-attachment_fu.svg" alt="Gem Version" />}[https://rubygems.org/gems/ryankopf-attachment_fu]
+{<img src="http://ruby-gem-downloads-badge.herokuapp.com/ryankopf-attachment_fu?type=total&color=brightgreen" />}[https://rubygems.org/gems/pothoven-attachment_fu]
+{<img src="http://ruby-gem-downloads-badge.herokuapp.com/ryankopf-attachment_fu?color=brightgreen&label=for-this-version" />}[https://rubygems.org/gems/pothoven-attachment_fu]
 
 attachment_fu is a plugin by Rick Olson (aka technoweenie
 http://techno-weenie.net) and is the successor to acts_as_attachment. To get a
