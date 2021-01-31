@@ -48,7 +48,7 @@ class OrphanAttachmentTest < Test::Unit::TestCase
   def test_should_create_thumbnail
     attachment = upload_file :filename => '/files/rails.png'
     
-    assert_raise Technoweenie::AttachmentFu::ThumbnailError do
+    assert_raise AttachmentFu::ThumbnailError do
       attachment.create_or_update_thumbnail(attachment.create_temp_file, 'thumb', 50, 50)
     end
   end
@@ -56,7 +56,7 @@ class OrphanAttachmentTest < Test::Unit::TestCase
   def test_should_create_thumbnail_with_geometry_string
    attachment = upload_file :filename => '/files/rails.png'
     
-    assert_raise Technoweenie::AttachmentFu::ThumbnailError do
+    assert_raise AttachmentFu::ThumbnailError do
       attachment.create_or_update_thumbnail(attachment.create_temp_file, 'thumb', 'x50')
     end
   end
