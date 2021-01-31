@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 group :test, :development do
-  gem 'rails', '~> 5.2'
+  gem 'rails', '~> 6.0'
   gem 'sqlite3'
   gem 'attachment_fu', :path => '.'
   gem 'rmagick'
