@@ -1,3 +1,3 @@
 module AttachmentFu
-  VERSION = '5.2.1.28'
+  VERSION = '5.2.1.29'
 end
