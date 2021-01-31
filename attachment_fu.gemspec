@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name			  = %q{ryankopf-attachment_fu}
+  s.name			  = %q{attachment_fu}
   s.authors			= ["Rick Olson", "Steven Pothoven", "Ryan Kopf"]
   s.summary			= %q{attachment_fu as a gem}
   s.description	= %q{This is a fork of Steven Pothoven's fork of Rick Olson's attachment_fu, adding Rails 5 support.}
   s.email			  = %q{ryan@ryankopf.com}
   s.homepage		= %q{http://github.com/ryankopf/attachment_fu}
-  s.version			= "5.2.1.18"
+  s.version			= "5.2.1.19"
   s.date			  = %q{2020-05-05}
 
   s.files			  = Dir.glob("{lib}/**/*") + %w( CHANGELOG LICENSE README.rdoc amazon_s3.yml.tpl rackspace_cloudfiles.yml.tpl )

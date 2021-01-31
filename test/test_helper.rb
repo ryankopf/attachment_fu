@@ -5,7 +5,7 @@ ENV['RAILS_ENV'] = 'test'
 
 require 'rails/all'
 require 'test/unit'
-require 'ryankopf-attachment_fu'
+require 'attachment_fu'
 include ActionDispatch::TestProcess
 
 # Define the application and configuration
