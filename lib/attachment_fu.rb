@@ -9,7 +9,7 @@ require "attachment_fu/processors/rmagick_processor"
 module AttachmentFu # :nodoc:
   @@default_processors = %w(ImageScience Rmagick MiniMagick)
   # @@tempfile_path      = File.join(Rails.root, 'tmp', 'attachment_fu')
-  @@tempfile_path      = File.join(Rails.application.root, 'tmp', 'attachment_fu')
+  @@tempfile_path      = File.join('..', 'tmp', 'attachment_fu')
   @@content_types      = [
     'image/jpeg',
     'image/pjpeg',
