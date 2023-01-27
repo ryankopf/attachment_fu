@@ -173,7 +173,7 @@ module AttachmentFu # :nodoc:
       def self.included(base) #:nodoc:
         mattr_reader :bucket_name, :s3_config
         begin
-          require 'aws-sdk'
+          require 'aws-sdk-s3'
           include Aws::S3
         rescue LoadError
           raise RequiredLibraryNotFoundError.new('AWS::S3 could not be loaded')
