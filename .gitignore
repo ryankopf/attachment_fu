@@ -9,3 +9,4 @@ tmp/restart.txt
 log
 tmp
 test/amazon_s3.yml
+.idea/

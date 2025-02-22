@@ -1,13 +1,13 @@
-require "attachment_fu/version"
-require "attachment_fu/engine"
-require "attachment_fu/act_methods"
-require "attachment_fu/class_methods"
-require "attachment_fu/instance_methods"
-require "attachment_fu/backends/file_system_backend"
-require "attachment_fu/backends/s3_backend"
-require "attachment_fu/processors/image_science_processor"
-require "attachment_fu/processors/mini_magick_processor"
-require "attachment_fu/processors/rmagick_processor"
+require_relative "attachment_fu/version"
+require_relative "attachment_fu/engine"
+require_relative "attachment_fu/act_methods"
+require_relative "attachment_fu/class_methods"
+require_relative "attachment_fu/instance_methods"
+require_relative "attachment_fu/backends/file_system_backend"
+require_relative "attachment_fu/backends/s3_backend"
+require_relative "attachment_fu/processors/image_science_processor"
+require_relative "attachment_fu/processors/mini_magick_processor"
+require_relative "attachment_fu/processors/rmagick_processor"
 
 module AttachmentFu # :nodoc:
   @@default_processors = %w(ImageScience Rmagick MiniMagick)

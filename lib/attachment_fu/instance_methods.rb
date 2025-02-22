@@ -304,7 +304,7 @@ module AttachmentFu
         sbl_quality  = nil if sbl_quality && require_0_to_100 && !sbl_quality.to_i.between?(0, 100)
         surface      = (width || 1) * (height || 1)
         size_quality = quality.detect { |k, v|
-          next unless k.is_a?(String) && k =~ /^(<|>=)(\d+)$/
+          next unless k.is_a?(String) && k =~ /^(<|>=)(\d+)$/ 
           op, threshold = $1, $2.to_i
           surface.send(op, threshold)
         }
