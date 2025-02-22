@@ -2,11 +2,20 @@
 
 This is an update to attachment_fu for old apps that used it before activestorage.
 
-It was first a plugin by Rick Olson (http://techno-weenie.net) and is the successor
-to acts_as_attachment. To get a basic run-through of its capabilities, check out {Mike Clark's
-tutorial}[https://github.com/pothoven/attachment_fu/blob/master/TUTORIAL.rdoc].
+= Requirements
 
-= attachment_fu functionality
+Install an image processing library from the selection below.
+
+[*ImageScience*]
+   A light inline-Ruby library that only resizes images. (Wraps the FreeImage library.)
+
+[*RMagick*]
+  The grand-daddy, both in terms of advanced image processing features and memory usage. (Wraps the ImageMagick library.)
+
+[*minimagick*]
+  It's much easier on memory than RMagick because it runs the ImageMagick command in a shell.
+
+= Functionality
 
 attachment_fu facilitates file uploads in Ruby on Rails. There are a few
 storage options for the actual file data, but the plugin always at a minimum
@@ -25,7 +34,7 @@ requires you to modify +config/amazon_s3.yml+, the Rackspace Cloud Files storage
 requires you to modify +config/rackspace_cloudfiles.yml+, and the Database file
 storage requires an extra table.
 
-= attachment_fu models
+= Models
 
 For all three of these storage options a table of metadata is required. This
 table will contain information about the file (hence the 'meta') and its
